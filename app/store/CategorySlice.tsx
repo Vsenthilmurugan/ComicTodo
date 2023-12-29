@@ -3,7 +3,7 @@ import { DataTypes } from '../common/types';
 
 
 const initialState: DataTypes.CategorySelection = {
-  categoryName: 'generator',
+  categoryName: 'welcome',
   };
 
 const CategorySlice = createSlice({

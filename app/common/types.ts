@@ -19,6 +19,7 @@ export namespace DataTypes {
         theme_inprogress: string;
         theme_completed: string;
         theme_available: string;
+        theme_welcome_banner:string;
     }
 
     export interface CategorySelection{
@@ -26,5 +27,11 @@ export namespace DataTypes {
     }
     export interface ListType{
         categoryName:string
+    }
+    export interface todoProps{
+        _id:string
+        status:string
+        description:string
+        uid:string
     }
 }

@@ -13,6 +13,7 @@ const initialState: DataTypes.ThemeProps = {
     theme_inprogress: 'goofy',
     theme_completed: 'donald',
     theme_available: 'minnie',
+    theme_welcome_banner: 'm_welcome.gif'
   };
 
 const themeSlice = createSlice({
