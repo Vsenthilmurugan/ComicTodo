@@ -1,35 +1,26 @@
 "use client";
-import { Fragment, useEffect } from "react";
+import MainViewCard from "../components/CarouselItems/MainViewCard";
 import { useDispatch, useSelector } from "react-redux";
-import dynamic from "next/dynamic";
+import Cards from "../components/CarouselItems/Cards";
 import { DataTypes } from "../common/types";
+import { Fragment, useEffect } from "react";
 import { handleUpdateTheme, verifyToken } from "../common/utilities";
-const MainViewCard = dynamic(
-  () => import("../components/CarouselItems/MainViewCard")
-);
-const Cards = dynamic(() => import("../components/CarouselItems/Cards"));
-const Preloader = dynamic(() => import("../components/Loader/Preloader"));
-const useRouter =
-  typeof window !== "undefined"
-    ? require("next/navigation").useRouter
-    : () => {};
+import { useRouter } from "next/navigation";
+import Preloader from "../components/Loader/Preloader";
 
 export default function UserTodo() {
   const themeState: DataTypes.ThemeProps = useSelector(
     (state: any) => state.theme
   );
   const route = useRouter();
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
-  const authData = verifyToken(token != undefined ? token : "", route);
+  const authData = verifyToken(localStorage.getItem("token")!, route);
   const dispatch = useDispatch();
 
+
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedTheme = localStorage.getItem("theme");
-      if (storedTheme) {
-        handleUpdateTheme(storedTheme, dispatch);
-      }
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) {
+      handleUpdateTheme(storedTheme, dispatch);
     }
   }, [dispatch]);
 
@@ -44,7 +35,7 @@ export default function UserTodo() {
           <Cards />
         </Fragment>
       ) : (
-        <Preloader />
+        <Preloader/>
       )}
     </div>
   );

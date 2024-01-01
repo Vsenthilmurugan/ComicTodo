@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { serverAPI } from "../common/serverAPI";
@@ -14,8 +13,8 @@ import { useDispatch } from "react-redux";
 
 const SignIn = () => {
   const router = useRouter();
-  const userToken = typeof window !== 'undefined' ?localStorage.getItem("token"):null;
-  const uid = typeof window !== 'undefined' ?localStorage.getItem("uid"):null;
+  const userToken = localStorage.getItem("token");
+  const uid = localStorage.getItem("uid");
   const dispatch = useDispatch();
 
   const schema = Yup.object().shape({
@@ -33,7 +32,7 @@ const SignIn = () => {
 
   const onSubmit = (data: any) => {
     serverAPI.userLogin(data.email, data.password).then((res) => {
-      if (res != undefined && typeof window !== 'undefined') {
+      if (res != undefined) {
         toast.success(res.data.data.message);
         localStorage.setItem("token", res.data.data.token);
         localStorage.setItem("uid", res.data.data.uid);
