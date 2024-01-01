@@ -14,17 +14,14 @@ import Image from "next/image";
 import { DataTypes } from "../common/types";
 import { useSelector } from "react-redux";
 import Link from "next/link";
-import PortraitIcon from '@mui/icons-material/Portrait';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-
-const settings = ["userTodo","profile", "logout"];
-const settingIcons = [<PortraitIcon/>,<ListAltIcon/>, <ExitToAppIcon/>];
-const settingsPath = ["/userTodo","/profile", "/signIn"];
+import PortraitIcon from "@mui/icons-material/Portrait";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 const Header = () => {
-
-  const themeState:DataTypes.ThemeProps = useSelector((state:any) => state.theme);
+  const themeState: DataTypes.ThemeProps = useSelector(
+    (state: any) => state.theme
+  );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -37,17 +34,14 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="sticky" style={{background:themeState.theme_header,height:"70px"}}>
+    <AppBar
+      position="sticky"
+      style={{ background: themeState.theme_header, height: "70px" }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters className="flex items-center justify-between">
-          {/* Logo at the top left */}
           <Image src={"/logo.png"} height={120} width={120} alt="logo" />
-
-          <Box className="hidden md:flex" sx={{ flexGrow: 1 }}>
-            {/* Additional content can go here if needed */}
-          </Box>
-
-          {/* Profile image at the top right */}
+          <Box className="hidden md:flex" sx={{ flexGrow: 1 }}></Box>
           <Box>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -70,13 +64,35 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting,index:number) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Link href={settingsPath[index]}>
-                  <Typography textAlign="center">{settingIcons[index]}&nbsp;{setting}</Typography>
-                  </Link>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseUserMenu}>
+                <Link href={"userTodo"}>
+                  <Typography textAlign="center">
+                    <PortraitIcon />
+                    &nbsp;userTodo
+                  </Typography>
+                </Link>
+              </MenuItem>
+              <MenuItem onClick={handleCloseUserMenu}>
+                <Link href={"/profile"}>
+                  <Typography textAlign="center">
+                    <ListAltIcon />
+                    &nbsp;Profile
+                  </Typography>
+                </Link>
+              </MenuItem>
+              <MenuItem onClick={handleCloseUserMenu}>
+                <Link
+                  href={"/signIn"}
+                  onClick={() => {
+                    localStorage.clear();
+                  }}
+                >
+                  <Typography textAlign="center">
+                    <ExitToAppIcon />
+                    &nbsp;Logout
+                  </Typography>
+                </Link>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { updateTheme } from "../store/themeSlice";
-import { updateCategory } from "../store/CategorySlice";
+import { updateTheme } from "../reducers/themeSlice";
+import { updateCategory } from "../reducers/CategorySlice";
 import jwt from "jsonwebtoken";
 
 export const handleUpdateTheme = (themeName: string, dispatch: any) => {
@@ -17,7 +17,8 @@ export const handleUpdateTheme = (themeName: string, dispatch: any) => {
         theme_generator: "strange",
         theme_generator_text: "Ask Strange",
         theme_inprogress: "wanda",
-        theme_welcome_banner:"a_welcome.gif"
+        theme_welcome_banner: "a_welcome.gif",
+        theme_background: "bg-bg-avengers",
       })
     );
   } else if (themeName == "mickey") {
@@ -33,7 +34,8 @@ export const handleUpdateTheme = (themeName: string, dispatch: any) => {
         theme_generator: "mickey",
         theme_generator_text: "Ask Mickey",
         theme_inprogress: "goofy",
-        theme_welcome_banner:"m_welcome.gif"
+        theme_welcome_banner: "m_welcome.gif",
+        theme_background: "bg-bg-mickey",
       })
     );
   } else if (themeName == "frozen") {
@@ -49,7 +51,8 @@ export const handleUpdateTheme = (themeName: string, dispatch: any) => {
         theme_generator: "olaf",
         theme_generator_text: "Ask Olaf",
         theme_inprogress: "frozen_ok",
-        theme_welcome_banner:"f_welcome.gif"
+        theme_welcome_banner: "f_welcome.gif",
+        theme_background: "bg-bg-frozen",
       })
     );
   } else {
@@ -65,10 +68,12 @@ export const handleUpdateTheme = (themeName: string, dispatch: any) => {
         theme_generator: "mickey",
         theme_generator_text: "Ask Mickey",
         theme_inprogress: "goofy",
-        theme_welcome_banner:"m_welcome.gif"
+        theme_welcome_banner: "m_welcome.gif",
+        theme_background: "bg-bg-mickey",
       })
     );
   }
+  localStorage.setItem("theme", themeName);
 };
 
 export const handleCategory = (categoryValue: string, dispatch: any) => {
@@ -83,11 +88,13 @@ export const getAuthString = () => {
   return token;
 };
 
-export const verifyToken = (token: string, route: any) => {
-  try {
-    const decodedToken = jwt.verify(token, "secretkey");
-    return decodedToken;
-  } catch (error) {
-    route.push("/signIn");
+export const verifyToken = (token: string | null, route: any) => {
+  if (token != null && route != null) {
+    try {
+      const decodedToken = jwt.verify(token, "secretkey");
+      return decodedToken;
+    } catch (error) {
+      route.push("/signIn");
+    }
   }
 };

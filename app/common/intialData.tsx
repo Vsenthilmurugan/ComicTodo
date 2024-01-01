@@ -7,4 +7,18 @@ export namespace intialData {
     status: "",
     uid: "",
   };
+  export const modalContent: DataTypes.modalContentProps = {
+    id: "",
+    modalType: "",
+    value: "",
+    handler: "",
+  };
+  export const userContent: DataTypes.userProps = {
+    _id: "",
+    name: "",
+    email: "",
+    password: "",
+    theme: "",
+    image:""
+  };
 }

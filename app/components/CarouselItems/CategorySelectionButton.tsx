@@ -1,7 +1,7 @@
 'use client'
 import { DataTypes } from '@/app/common/types';
 import { handleCategory, handleUpdateTheme } from '@/app/common/utilities';
-import { updateTheme } from '@/app/store/themeSlice';
+import { updateTheme } from '@/app/reducers/themeSlice';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 

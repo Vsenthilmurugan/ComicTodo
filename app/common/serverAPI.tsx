@@ -2,6 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { API, Endpoints } from "./constants";
 import { getAuthString } from "./utilities";
+import { DataTypes } from "./types";
 
 export namespace serverAPI {
   export enum APIMethod {
@@ -32,7 +33,7 @@ export namespace serverAPI {
     let data: { [k: string]: any } = {};
     data["description"] = description;
     data["uid"] = localStorage.getItem("uid");
-    return executeAPI(API.EndPoint.createtodo, APIMethod.POST, false, data);
+    return executeAPI(API.EndPoint.createtodo, APIMethod.POST, true, data);
   };
   export const updateTodo = async (
     dataKey: string,
@@ -42,21 +43,17 @@ export namespace serverAPI {
     let data: { [k: string]: any } = {};
     data[dataKey] = value;
     return executeAPI(
-      API.EndPoint.updatetodo+`/${todoId}`,
+      API.EndPoint.todo + `/${todoId}`,
       APIMethod.PATCH,
       true,
-      data,
+      data
     );
   };
   export const Todolist = async (status: string) => {
-    let params: { [k: string]: any } = {};
-    params["todoStatus"] = status;
     return executeAPI(
-      API.EndPoint.todolist,
+      API.EndPoint.todolist + `/${status}`,
       APIMethod.GET,
-      false,
-      null,
-      params
+      true
     );
   };
   export const RandomTodo = async () => {
@@ -64,24 +61,20 @@ export namespace serverAPI {
   };
   export const deleteTodo = async (todoId: string) => {
     let params: { [k: string]: any } = {};
-    params["todoId"] = todoId;
-    return executeAPI(
-      API.EndPoint.randomtodo,
-      APIMethod.DELETE,
-      false,
-      null,
-      params
-    );
+    return executeAPI(API.EndPoint.todo + `/${todoId}`, APIMethod.DELETE, true);
   };
-  export const getUser = async (uid: string) => {
-    let params: { [k: string]: any } = {};
-    params["uid"] = uid;
-    return executeAPI(API.EndPoint.getuser, APIMethod.GET, false, null, params);
+  export const getUser = async () => {
+    let uid = localStorage.getItem("uid");
+    return executeAPI(API.EndPoint.getuser + "/" + uid, APIMethod.GET, true);
   };
-  export const updateUser = async (dataKey: string) => {
+  export const updateUser = async (dataKey:DataTypes.userProps) => {
     let data: { [k: string]: any } = {};
-    data[dataKey] = dataKey;
-    return executeAPI(API.EndPoint.updateuser, APIMethod.PATCH, false, data);
+    data['email'] = dataKey.email;
+    data['password'] = dataKey.password;
+    data['theme'] = dataKey.theme;
+    data['name'] = dataKey.name;
+    data['image'] = dataKey.image;
+    return executeAPI(API.EndPoint.updateuser+`/${dataKey._id}`, APIMethod.PATCH, true, data);
   };
   export const executeAPI = async (
     endpoint: string,
@@ -111,7 +104,7 @@ export namespace serverAPI {
         headers: headers,
         params: params,
       });
-      const details = {data:response.data,status:response};
+      const details = { data: response.data, status: response };
       return details;
     } catch (error) {
       if (
@@ -132,7 +125,6 @@ export namespace serverAPI {
             toast.error(errorData["message"]);
           } else {
             return toast.error("Error Occured in the Request");
-            
           }
         }
       }

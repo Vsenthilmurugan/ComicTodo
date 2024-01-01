@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { config } from "react-spring";
 
 export default function Carroussel(props:any) {
-  console.log(props);
   const table = props.cards.map((element:any, index:number) => {
     return { ...element, onClick: () => setGoToSlide(index) };
   });
